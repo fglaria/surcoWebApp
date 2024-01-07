@@ -11,6 +11,19 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
+
+# Initialise environment variables
+env = environ.Env(
+    DB_MYSQL_DEV_USER=(str, '4'),
+    DB_MYSQL_DEV_PASSWORD=(str, '3'),
+    DB_MYSQL_DEV_NAME=(str, '2'),
+    DB_MYSQL_DEV_HOST=(str, '1'),
+    DB_MYSQL_DEV_PORT=(int, 0),
+)
+environ.Env.read_env()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,9 +88,13 @@ WSGI_APPLICATION = 'surcoApp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        "NAME": env("DB_MYSQL_DEV_NAME"),
+        "USER": env("DB_MYSQL_DEV_USER"),
+        "PASSWORD": env("DB_MYSQL_DEV_PASSWORD"),
+        "HOST": env("DB_MYSQL_DEV_HOST"),
+        "PORT": env("DB_MYSQL_DEV_PORT"),
+     }
 }
 
 
